@@ -21,11 +21,42 @@ namespace Lab2_api.Controllers
 
         // GET: api/Flowers
         [HttpGet]
-        public IEnumerable<Models.Movie> Get()
-        {
-            return context.Movies.Where(m => m.Date <= new DateTime(2019, 3, 11, 11, 20, 0)
-            && m.Date >= new DateTime(2019, 3, 10, 12, 30, 0)).OrderBy(m => m.Year);
+         public IEnumerable<Models.Movie> Get()
+         {
+           return context.Movies.Include(t => t.Comments).Where(m => m.Date <= new DateTime(2019, 3, 11, 11, 20, 0)
+           && m.Date >= new DateTime(2019, 3, 10, 12, 30, 0)).OrderBy(m => m.Year);
         }
+
+
+
+
+        // public IEnumerable<Models.Movie> GetAll(DateTime? from = null, DateTime? to = null)
+        // {
+        //     IQueryable<Movie> result = context
+        //         .Movies
+        //         .Include(f => f.Comments);
+        //     if (from == null && to == null)
+        //     {
+        //         return result.Select(m => Models.Movie.FromMovie(m));
+        //     }
+        //     if (from != null)
+        //     {
+        //         result = result.Where(m => m.DatePicked >= from);
+        //     }
+        //     if (to != null)
+        //     {
+        //         result = result.Where(m => m.DatePicked <= to);
+        //     }
+        //      return result.Select(f => Models.Movie.FromMovie(m));
+        //  }
+
+
+        //   public IEnumerable<Models.Movie> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
+        //  {
+        //       return Movie.GetAll(from, to);
+        //   }
+
+
 
         // GET: api/Products/5
         [HttpGet("{id}", Name = "Get")]
@@ -56,7 +87,7 @@ namespace Lab2_api.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Movie movie)
         {
-            var existing = context.Movies.AsNoTracking().FirstOrDefault(m => m.Id == id);
+            var existing = context.Movies.Include(t => t.Comments).AsNoTracking().FirstOrDefault(m => m.Id == id);
             if (existing == null)
             {
                 context.Movies.Add(movie);
