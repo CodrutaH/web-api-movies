@@ -20,12 +20,39 @@ namespace Lab2_api.Controllers
         }
 
         // GET: api/Flowers
+       /* [HttpGet]
+         public IEnumerable<Models.Movie> Get()
+         {
+           return context.Movies.Include(t => t.Comments).Where(m => m.Date <= new DateTime(2019, 3, 11, 11, 20, 0)
+           && m.Date >= new DateTime(2019, 3, 10, 12, 30, 0)).OrderBy(m => m.Year);
+        }*/
+
+        // GET: api/Flowers
         [HttpGet]
-        public IEnumerable<Models.Movie> Get()
+        public IEnumerable<Models.Movie> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
-            return context.Movies.Where(m => m.Date <= new DateTime(2019, 3, 11, 11, 20, 0)
-            && m.Date >= new DateTime(2019, 3, 10, 12, 30, 0)).OrderBy(m => m.Year);
+            IQueryable<Movie> result = context.Movies;
+            if (from == null && to == null)
+            {
+                return result;
+            }
+            if (from != null)
+            {
+                result = result.Where(m => m.Date >= from);
+
+            }
+            if (to != null)
+            {
+                result = result.Where(m => m.Date <= to);
+            }
+
+            return result;
+
         }
+
+
+
+
 
         // GET: api/Products/5
         [HttpGet("{id}", Name = "Get")]
@@ -56,7 +83,7 @@ namespace Lab2_api.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Movie movie)
         {
-            var existing = context.Movies.AsNoTracking().FirstOrDefault(m => m.Id == id);
+            var existing = context.Movies.Include(t => t.Comments).AsNoTracking().FirstOrDefault(m => m.Id == id);
             if (existing == null)
             {
                 context.Movies.Add(movie);
