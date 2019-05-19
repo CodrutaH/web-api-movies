@@ -31,7 +31,7 @@ namespace Lab2_api.Controllers
         [HttpGet]
         public IEnumerable<Models.Movie> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
-            IQueryable<Movie> result = context.Movies;
+            IQueryable<Movie> result = context.Movies.Include(t => t.Comments);
             if (from == null && to == null)
             {
                 return result;
