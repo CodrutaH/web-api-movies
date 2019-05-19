@@ -31,10 +31,10 @@ namespace Lab2_api.Controllers
 
         // GET: api/Flowers
         [HttpGet]
-        public IEnumerable<Models.Movie> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
+        public IEnumerable<Models.Movie> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to, [FromQuery]String genre)
         {
-            IQueryable<Movie> result = context.Movies;
-            if(from ==null && to ==null)
+            IQueryable<Movie> result = context.Movies.Include(m=>m.Comments);
+            if(from ==null && to ==null && genre==null)
             {
                 return result;
             }
@@ -48,18 +48,21 @@ namespace Lab2_api.Controllers
                 result = result.Where(m => m.Date <= to);
             }
 
-            return result;
-                   
-        }
+            if (genre != null)
+            {
+                result = result.Where(m => m.Genre.Equals(genre) );
+            }
 
-        
+            return result;
+                  
+           }
 
 
         // GET: api/Products/5
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            var existing = context.Movies.FirstOrDefault(movie => movie.Id == id);
+            var existing = context.Movies.Include(m => m.Comments).FirstOrDefault(movie => movie.Id == id);
             if (existing == null)
             {
                 return NotFound();
@@ -101,7 +104,7 @@ namespace Lab2_api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var existing = context.Movies.FirstOrDefault(movie => movie.Id == id);
+            var existing = context.Movies.Include(t => t.Comments).FirstOrDefault(movie => movie.Id == id);
             if (existing == null)
             {
                 return NotFound();

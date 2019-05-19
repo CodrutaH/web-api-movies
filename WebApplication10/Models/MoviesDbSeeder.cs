@@ -29,7 +29,7 @@ namespace Lab2.Models
                     Year = 1999,
                     Date = DateTime.Now,
                     Rating = 9,
-                    Watched = true
+                    Watched = "yes"
                 },
                 new Movie
                 {
@@ -41,7 +41,7 @@ namespace Lab2.Models
                     Year = 2001,
                     Date = DateTime.Now,
                     Rating = 10,
-                    Watched = false
+                    Watched = "no"
                 },
                 new Movie
                 {
@@ -53,7 +53,7 @@ namespace Lab2.Models
                     Year = 2001,
                     Date = DateTime.Now,
                     Rating = 10,
-                    Watched = false
+                    Watched = "no"
                 }
             );
             context.SaveChanges();
