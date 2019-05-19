@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Lab2.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace Lab2_api.Models
         }
 
         public DbSet<Movie> Movies { get; set; }
-        
+        public DbSet<Comment> Comments { get; set; }
     }
 }
