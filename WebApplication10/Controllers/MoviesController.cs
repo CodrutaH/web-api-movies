@@ -19,44 +19,13 @@ namespace Lab2_api.Controllers
             this.context = context;
         }
 
-     /*   // GET: api/Flowers
-        [HttpGet]
-         public IEnumerable<Models.Movie> Get()
-         {
-           return context.Movies.Include(t => t.Comments).Where(m => m.Date <= new DateTime(2019, 3, 11, 11, 20, 0)
-           && m.Date >= new DateTime(2019, 3, 10, 12, 30, 0)).OrderBy(m => m.Year);
-        }
-        */
-
-
         // GET: api/Flowers
         [HttpGet]
-        public IEnumerable<Models.Movie> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to, [FromQuery]String genre)
+        public IEnumerable<Models.Movie> Get()
         {
-            IQueryable<Movie> result = context.Movies.Include(m=>m.Comments);
-            if(from ==null && to ==null && genre==null)
-            {
-                return result;
-            }
-            if (from!=null)
-            {
-                result = result.Where(m => m.Date >= from);
-
-            }
-            if (to !=null)
-            {
-                result = result.Where(m => m.Date <= to);
-            }
-
-            if (genre != null)
-            {
-                result = result.Where(m => m.Genre.Equals(genre) );
-            }
-
-            return result;
-                  
-           }
-
+            return context.Movies.Where(m => m.Date <= new DateTime(2019, 3, 11, 11, 20, 0)
+            && m.Date >= new DateTime(2019, 3, 10, 12, 30, 0)).OrderBy(m => m.Year);
+        }
 
         // GET: api/Products/5
         [HttpGet("{id}", Name = "Get")]
